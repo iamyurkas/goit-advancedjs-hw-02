@@ -26,6 +26,15 @@ const messageError = {
   position: 'topRight',
 };
 
+const messageEnd = {
+  title: 'Done',
+  message: "Let's go!",
+  titleColor: '#ffffff',
+  messageColor: '#ffffff',
+  color: '#25a321',
+  position: 'topRight',
+};
+
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -51,10 +60,17 @@ function onStartEvent() {
   refs.startButton.disabled = true;
   refs.input.disabled = true;
 
-  setInterval(() => {
+  const timer = setInterval(() => {
     const currentDate = new Date().getTime();
     const eventDate = selectedNewDates - currentDate;
     startPromoTimer(convertMs(eventDate));
+    if (selectedNewDates - currentDate < 1000) {
+      clearInterval(timer);
+      iziToast.show(messageEnd);
+
+      refs.startBtn.disabled = false;
+      refs.input.disabled = false;
+    }
   }, 1000);
 }
 
